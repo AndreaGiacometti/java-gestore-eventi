@@ -10,7 +10,7 @@ public class Evento {
 	public Evento(String titolo, LocalDate data, int postiTotali) {
 		this.setTitolo(titolo);
 		this.setData(data);
-		this.setPostiTotali(postiTotali);
+		this.postiTotali = postiTotali;
 		this.postiPrenotati = 0;
 	}
 	
@@ -32,13 +32,10 @@ public class Evento {
 	}
 	
 	public int getPostiTotali() {
-		return this.postiTotali;
-	}
-	public void setPostiTotali(int postiTotali) {
 		if (postiTotali <=0) {
 			throw new IllegalArgumentException("I posti totali devono essere maggiori di 0");
 		}
-		this.postiTotali = postiTotali;
+		return this.postiTotali;
 	}
 	
 	public int getPostiPrenotati() {
