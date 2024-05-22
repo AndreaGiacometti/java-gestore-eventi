@@ -1,5 +1,6 @@
 package org.lessons.java.gestoreeventi;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Evento {
 	private String titolo;
@@ -41,5 +42,41 @@ public class Evento {
 	public int getPostiPrenotati() {
 		return this.postiPrenotati;
 	}
+	
+	public int getPostiDisponibili() {
+        return this.postiTotali - this.postiPrenotati;
+    }
+	
+	public int prenota() {
+		if (this.postiPrenotati >= this.postiTotali) {
+			throw new IllegalArgumentException("Peccato! Non ci sono abbastanza posti.");
+		} else {
+			this.postiPrenotati++;
+			return this.postiPrenotati;
+		}
+	}
+	
+	  public void resetPostiPrenotati() {
+	        this.postiPrenotati = 0;
+	    }
+	
+	public int disdici() {
+		if (this.postiPrenotati < 0) {
+			throw new IllegalArgumentException("Stai cercando di disdire più prenotazioni di quante ce ne siano!");
+		} else {
+			this.postiPrenotati--;
+			return this.postiPrenotati;
+		}
+	}
+	
+	@Override
+    public String toString() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String dataFormattata = data.format(formatter);
+        titolo = titolo.toUpperCase();
+        return "Evento in programma: " + titolo + ", previsto per il giorno " + dataFormattata + ".";
+	}
 }
+
+
 
