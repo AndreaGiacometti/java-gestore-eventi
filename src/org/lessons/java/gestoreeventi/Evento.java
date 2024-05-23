@@ -17,10 +17,13 @@ public class Evento {
 	}
 
 	public String getTitolo() {
-		return this.titolo;
+		return titolo;
 	}
 
 	public void setTitolo(String titolo) {
+		 if (titolo == null || titolo.trim().isEmpty()) {
+	            throw new IllegalArgumentException("Il titolo dell'evento non può essere vuoto.");
+		}
 		this.titolo = titolo;
 	}
 

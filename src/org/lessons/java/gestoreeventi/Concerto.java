@@ -39,12 +39,13 @@ public class Concerto extends Evento {
 
 	public String getPrezzoFormattato() {
 		NumberFormat formatoEuro = NumberFormat.getCurrencyInstance(Locale.ITALY);
+//		formatoEuro.setMinimumFractionDigits(2);
 		return formatoEuro.format(prezzoBiglietto);
 	}
 
 	@Override
 	public String toString() {
 		return super.toString() + " Inizio concerto ore " + getOraFormattata() + ", prezzo del biglietto "
-				+ getPrezzoFormattato() + ".";
+				+ getPrezzoFormattato();
 	}
 }

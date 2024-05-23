@@ -5,47 +5,74 @@ import java.time.LocalTime;
 import java.util.Scanner;
 
 public class Main {
-
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
 
-//		CHIEDO ALL'UTENTE SE VUOLE CREARE UN EVENTO O UN CONCERTO
+		String titoloProgramma = null;
 		boolean success = false;
 		while (!success) {
-			System.out.println("Vuoi creare un evento generico o un concerto? (e/c)");
-			String scelta = scanner.nextLine();
-//			SE L'UTENTE SCEGLI E CREO UN OGGETTO EVENTO CON IL COSTRUTTORE CREAEVENTO CHE VERRA' IMPOSTATO SUCCESSIVAMENTE CON UNA SERIE DI INPUT DA SCANNER
-			if (scelta.equalsIgnoreCase("e")) {
-				Evento evento = creaEvento(scanner);
-				gestisciPrenotazioni(scanner, evento);
-				success = true;
-//			SE L'UTENTE SCEGLIE C CREO UN OGGETTO CONCERTO CHE VERRA' IMPOSTATO SUCCESSIVAMENTE CON UNA SERIE DI INPUT DA SCANNER
-			} else if (scelta.equalsIgnoreCase("c")) {
-				Concerto concerto = creaConcerto(scanner);
-				gestisciPrenotazioni(scanner, concerto);
-				success = true;
+			System.out.print("Inserisci il titolo del programma di eventi: ");
+			titoloProgramma = scanner.nextLine();
+			if (titoloProgramma == null || titoloProgramma.trim().isEmpty()) {
+				System.out.println("Inserire almeno una lettera come titolo");
 			} else {
+				success = true;
+			}
+
+		}
+
+		ProgrammaEventi programmaEventi = new ProgrammaEventi(titoloProgramma);
+
+		boolean continua = true;
+		while (continua) {
+			System.out.println(
+					"(e) Crea un evento generico\n(c) Crea un concerto\n(v) Visualizza tutti gli eventi\n(q) Esci");
+			String scelta = scanner.nextLine();
+
+			switch (scelta.toLowerCase()) {
+			case "e":
+				Evento evento = creaEvento(scanner);
+				programmaEventi.aggiungiEvento(evento);
+				gestisciPrenotazioni(scanner, evento);
+				break;
+			case "c":
+				Concerto concerto = creaConcerto(scanner);
+				programmaEventi.aggiungiEvento(concerto);
+				gestisciPrenotazioni(scanner, concerto);
+				break;
+			case "v":
+				System.out.println("\nProgramma degli eventi:");
+				System.out.println(programmaEventi.visualizzaEventiOrdinatiPerData());
+				break;
+			case "q":
+				continua = false;
+				break;
+			default:
 				System.out.println("Scelta non valida.");
 			}
 		}
+
+		// Visualizza il programma di eventi ordinato per data
+		System.out.println("\nProgramma degli eventi:");
+		System.out.println(programmaEventi);
+		scanner.close();
 	}
 
 //	IMPLEMENTO IL METODO creaEvento
 	private static Evento creaEvento(Scanner scanner) {
-//		CHIEDO ALL'UTENTE DI DARE UN TITOLO ALL'EVENTO E LO ASSOCIO VARIABILE titolo
+//		CHIEDO ALL'UTENTE DI INSERIRE I DETTAGLI DELL'EVENTO
 		System.out.println("Inserisci i dettagli del nuovo evento:");
 
-		System.out.print("Titolo: ");
-		String titolo = scanner.nextLine();
-
 //		ASSOCIO ALLE ISTANZE DELLA CLASSE Evento I RELATIVI METODI STATICI PER CREARE L'EVENTO CHE VERRANNO IMPLEMENTATI SUCCESSIVAMENTE
+		String titolo = leggiTitolo(scanner);
+
 		LocalDate data = leggiData(scanner);
 
 		int postiTotali = leggiPostiTotali(scanner);
-		
+
 //		CREO L'OGGETTO evento INVOCANDO IL COSTRUTTORE
 		Evento evento = new Evento(titolo, data, postiTotali);
-		
+
 //		STAMPO A VIDEO IL METODO toString DELLA CLASSE Evento
 		System.out.println("");
 		System.out.println(evento);
@@ -55,13 +82,12 @@ public class Main {
 
 //	IMPLEMENTO IL METODO creaConcerto
 	private static Concerto creaConcerto(Scanner scanner) {
-//		CHIEDO ALL'UTENTE DI DARE UN TITOLO AL CONCERTO E LO ASSOCIO VARIABILE titolo
+//		CHIEDO ALL'UTENTE DI INSERIRE I DETTAGLI DEL CONCERTO
 		System.out.println("Inserisci i dettagli del nuovo concerto:");
 
-		System.out.print("Titolo: ");
-		String titolo = scanner.nextLine();
-		
 //		ASSOCIO ALLE ISTANZE DELLA CLASSE Concerto I RELATIVI METODI STATICI PER CREARE L'EVENTO CHE VERRANNO IMPLEMENTATI SUCCESSIVAMENTE
+		String titolo = leggiTitolo(scanner);
+
 		LocalDate data = leggiData(scanner);
 
 		int postiTotali = leggiPostiTotali(scanner);
@@ -74,7 +100,7 @@ public class Main {
 
 //		CREO L'OGGETTO concerto INVOCANDO IL COSTRUTTORE
 		Concerto concerto = new Concerto(titolo, data, postiTotali, ora, prezzoBiglietto);
-		
+
 //		STAMPO A VIDEO IL METODO toString DELLA CLASSE Concerto
 		System.out.println("");
 		System.out.println(concerto);
@@ -83,6 +109,24 @@ public class Main {
 	}
 
 //	IMPLEMENTO I METODI STATICI CHE HO ASSOCIATO ALLE ISTRANZE DELLE CLASSI
+
+	private static String leggiTitolo(Scanner scanner) {
+		String titolo = null;
+		boolean success = false;
+		while (!success) {
+			System.out.print("Titolo: ");
+			titolo = scanner.nextLine();
+			if (titolo == null || titolo.trim().isEmpty()) {
+				System.out.println("Inserire almeno una lettera come titolo");
+			} else {
+				success = true;
+			}
+
+		}
+
+		return titolo;
+	}
+
 	private static LocalDate leggiData(Scanner scanner) {
 		LocalDate data = null;
 		boolean success = false;
@@ -100,7 +144,8 @@ public class Main {
 				}
 //				SE VIENE INSERITO UN FORMATO DIVERSO DA QUELLO ISO VIENE RICHIAMATO UN ALERT
 			} catch (java.time.format.DateTimeParseException e) {
-				System.out.println("Formato data non valido. Assicurati di utilizzare il formato corretto (yyyy-MM-dd).");
+				System.out
+						.println("Formato data non valido. Assicurati di utilizzare il formato corretto (yyyy-MM-dd).");
 			}
 		}
 		return data;
@@ -167,7 +212,7 @@ public class Main {
 		}
 		return prezzoBiglietto;
 	}
-	
+
 //	IMPLEMENTO IL METODO PER GESTIRE LE PRENOTAZIONI E LE DISDETTE
 	private static void gestisciPrenotazioni(Scanner scanner, Evento evento) {
 		boolean success = false;
@@ -232,19 +277,18 @@ public class Main {
 			} catch (IllegalArgumentException e) {
 				System.out.println(e.getMessage());
 			}
+			scanner.nextLine();
 		}
-
-//		CHIUDO LO SCANNER
-		scanner.close();
 
 //		STAMPO A VIDEO I RISULTATI DEGLI INPUT
 		System.out.println("");
-		System.out.println("Posti prenotati: " + evento.getPostiPrenotati());
-		System.out.println("Posti totali: " + evento.getPostiTotali());
-		System.out.println("Posti disponibili: " + evento.getPostiDisponibili());
-		System.out.println("Posti disdetti: " + disdette);
-		System.out.println("");
+//		System.out.println("Posti prenotati: " + evento.getPostiPrenotati());
+//		System.out.println("Posti totali: " + evento.getPostiTotali());
+//		System.out.println("Posti disponibili: " + evento.getPostiDisponibili());
+//		System.out.println("Posti disdetti: " + disdette);
+//		System.out.println("");
 		System.out.println("Grazie per la tua prenotazione!");
+		System.out.println("");
 	}
 
 }
