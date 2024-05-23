@@ -63,13 +63,12 @@ public class Evento {
 		this.postiPrenotati = 0;
 	}
 
-	public int disdici() {
-		if (this.postiPrenotati < 0) {
-			throw new IllegalArgumentException("Stai cercando di disdire più prenotazioni di quante ce ne siano!");
-		} else {
-			this.postiPrenotati--;
-			return this.postiPrenotati;
-		}
+	public void disdici() {
+	    if (this.postiPrenotati <= 0) {
+	        throw new IllegalArgumentException("Stai cercando di disdire più prenotazioni di quante ce ne siano!");
+	    } else {
+	        this.postiPrenotati--;
+	    }
 	}
 
 	@Override
