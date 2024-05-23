@@ -46,21 +46,26 @@ public class ProgrammaEventi {
 	public String visualizzaEventiOrdinatiPerData() {
 		StringBuilder sb = new StringBuilder();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		// Ordina gli eventi per data
+//		ORDINARE GLI ELEMENTI PER DATA
 		Collections.sort(eventi, (e1, e2) -> e1.getData().compareTo(e2.getData()));
-		// Costruisce la stringa formattata
+//		COSTRUIRE UNA STRINGA FORMATTATA
 		for (Evento evento : eventi) {
             sb.append(evento.getData().format(formatter))
               .append(" - ")
               .append(evento.getTitolo());
-
+            
+//            AGGIUNGO STRINGHE SE L'OGGETTO E' DELLA CLASSE CONCERTO
             if (evento instanceof Concerto) {
+//            	SE evento E' UN'ISTANZA DI Concerto ALLORA TRASFORMO evento IN UN concerto TRAMITE IL CAST "(Concerto) evento"
                 Concerto concerto = (Concerto) evento;
+//              FORMATTO L'ORARIO
                 DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-                sb.append(": inizio concerto ore ")
+//              CREO LA STRINGA DA STAMPARE
+                sb.append(" - inizio concerto ore ")
                   .append(concerto.getOra().format(timeFormatter))
                   .append(" - prezzo: ")
-                  .append(concerto.getPrezzoFormattato());
+                  .append(concerto.getPrezzoFormattato())
+                  .append("]");
                 
             }
 

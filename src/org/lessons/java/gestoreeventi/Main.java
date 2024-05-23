@@ -11,7 +11,7 @@ public class Main {
 		String titoloProgramma = null;
 		boolean success = false;
 		while (!success) {
-			System.out.print("Inserisci il titolo del programma di eventi: ");
+			System.out.println("Inserisci il titolo del programma di eventi: ");
 			titoloProgramma = scanner.nextLine();
 			if (titoloProgramma == null || titoloProgramma.trim().isEmpty()) {
 				System.out.println("Inserire almeno una lettera come titolo");
@@ -21,12 +21,14 @@ public class Main {
 
 		}
 
+//		CREO UN NUOVO OGGETTO programmaEventi
 		ProgrammaEventi programmaEventi = new ProgrammaEventi(titoloProgramma);
 
+//		APRO UN CICLO CHE PERMETTE DI SCEGLIERE SE COSTRUIRE UN OGGETTO, STAMPARE IL toString DELL'OGGETTO programmaEventi O SE USCIRE DAL CICLO E INTERROMPERE IL PROGRAMMA
 		boolean continua = true;
 		while (continua) {
 			System.out.println(
-					"(e) Crea un evento generico\n(c) Crea un concerto\n(v) Visualizza tutti gli eventi\n(q) Esci");
+					"[E] Crea un evento generico\n[C] Crea un concerto\n[V] Visualizza tutti gli eventi\n[Q] Esci");
 			String scelta = scanner.nextLine();
 
 			switch (scelta.toLowerCase()) {
@@ -52,9 +54,6 @@ public class Main {
 			}
 		}
 
-		// Visualizza il programma di eventi ordinato per data
-		System.out.println("\nProgramma degli eventi:");
-		System.out.println(programmaEventi);
 		scanner.close();
 	}
 
@@ -272,11 +271,13 @@ public class Main {
 //					SE VIENE INSERITO QUALCOSA CHE NON SIA UN NUMERO
 				} else {
 					System.out.println("Inserisci un numero intero positivo.");
-					scanner.next(); // Consuma l'input non valido
+					scanner.next();
 				}
 			} catch (IllegalArgumentException e) {
 				System.out.println(e.getMessage());
 			}
+			
+//			RICHIAMO NEXTLINE DOPO NEXTINT PER LEGGERE RIGA SUCCESSIVA
 			scanner.nextLine();
 		}
 
